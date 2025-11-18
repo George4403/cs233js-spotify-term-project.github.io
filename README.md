@@ -28,5 +28,5 @@ Built with Vanilla JavaScript, HTML, and Bootstrap CSS
 ## Clone this repository
 
 ```
-git clone https://github.com/your-username/cs233js-spotify-term-project.git
+git clone https://github.com/George4403/cs233js-spotify-term-project.git
 ```
