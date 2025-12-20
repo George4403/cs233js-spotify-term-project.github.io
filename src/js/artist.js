@@ -1,3 +1,8 @@
+import { SpotifyOAuthTokenRequest } from "../vendor/spotify/api/spotifyOAuthTokenRequest.js";
+import { SpotifySearchRequest } from "../vendor/spotify/api/spotifySearchRequest.js";
+import { SpotifyArtistRequest } from "../vendor/spotify/api/spotifyArtistRequest.js";
+import "../styles/styles.css";
+
 class Artist {
   constructor() {
     this.artistName = {
@@ -131,90 +136,6 @@ class Artist {
   }
 }
 
-// Class to handle Spotify OAuth Token Request
-class SpotifyOAuthTokenRequest {
-  // Initialize with client ID and client secret
-  constructor(clientID, clientSecret) {
-    this.clientID = clientID;
-    this.clientSecret = clientSecret;
-  }
-
-  // Fetch the access token from Spotify API
-  async getAccessToken() {
-    const authParameters = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: `grant_type=client_credentials&client_id=${this.clientID}&client_secret=${this.clientSecret}`,
-    };
-    // Make the request to get the access token
-    const response = await fetch(
-      "https://accounts.spotify.com/api/token",
-      authParameters
-    );
-    // Parse the JSON response to extract the access token
-    const data = await response.json();
-    return data.access_token;
-  }
-}
-
-// Class to handle Spotify Artist Search Request
-class SpotifySearchRequest {
-  // Initialize with access token
-  constructor(accessToken) {
-    this.accessToken = accessToken;
-  }
-
-  // Search for an artist by name and return their Spotify ID
-  async searchArtist(artistName) {
-    // Set up the search parameters with authorization header
-    const searchParameters = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    };
-    // Make the request to search for the artist
-    const response = await fetch(
-      `https://api.spotify.com/v1/search?q=${encodeURIComponent(
-        artistName
-      )}&type=artist`,
-      searchParameters
-    );
-    // Parse the JSON response to extract the artist ID
-    const data = await response.json();
-    return data.artists.items[0].id;
-  }
-}
-
-// Class to handle Spotify Artist Top Tracks Request
-class SpotifyArtistRequest {
-  // Initialize with access token
-  constructor(accessToken) {
-    this.accessToken = accessToken;
-  }
-
-  // Get the top tracks for a given artist ID
-  async getTopTracks(artistID) {
-    const searchParameters = {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.accessToken}`,
-      },
-    };
-    // Make the request to get the artist's top tracks
-    const response = await fetch(
-      `https://api.spotify.com/v1/artists/${artistID}/top-tracks?market=us`,
-      searchParameters
-    );
-    // Parse the JSON response to extract the tracks
-    const data = await response.json();
-    return data.tracks;
-  }
-}
 // Initialize the Artist class when the window loads
 window.onload = () => {
   new Artist();
