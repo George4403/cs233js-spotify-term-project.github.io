@@ -1,3 +1,4 @@
+import { SpotifyHttpClient } from "../vendor/spotify/client/SpotifyHttpClient.js";
 import { SpotifyOAuthTokenRequest } from "../vendor/spotify/api/spotifyOAuthTokenRequest.js";
 import { SpotifySearchRequest } from "../vendor/spotify/api/spotifySearchRequest.js";
 import { SpotifyArtistRequest } from "../vendor/spotify/api/spotifyArtistRequest.js";
@@ -38,16 +39,23 @@ class Artist {
   // Handle form submission
   async onFormSubmit(event) {
     event.preventDefault();
-
+    // Obtain access token
+    const tokenRequest = new SpotifyOAuthTokenRequest(
+      this.clientID,
+      this.clientSecret
+    );
+    // Fetch and set the access token
+    this.accessToken = await fetch(tokenRequest)
+      .then((response) => response.json())
+      .then((data) => data.access_token);
     try {
-      this.accessToken = await this.tokenRequest.getAccessToken();
-      console.log("Access Token:", this.accessToken);
-      // Initialize Spotify API Request Handlers with the access token
+      // Initialize search and artist requests with the access token
       this.searchRequest = new SpotifySearchRequest(this.accessToken);
       this.artistRequest = new SpotifyArtistRequest(this.accessToken);
       // Perform artist search
       await this.artistSearch();
     } catch (error) {
+      // Handle errors
       console.error("Error during form submission:", error);
     }
   }
@@ -55,19 +63,16 @@ class Artist {
   // Search for artist and get top tracks
   async artistSearch() {
     const artistName = this.$artist.value;
-    console.log("Search for " + artistName);
-
-    try {
-      const artistID = await this.searchRequest.searchArtist(artistName);
-      console.log("Artist ID:", artistID);
-
-      const tracks = await this.artistRequest.getTopTracks(artistID);
-      console.log("Top Tracks:", tracks);
-
-      this.displayTracks(tracks);
-    } catch (error) {
-      console.error("Error during artist search:", error);
-    }
+    // Fetch artist ID based on artist name
+    this.searchRequest.setArtist(artistName);
+    const artistID = await this.searchRequest.fetchArtistId();
+    console.log("Artist ID:", artistID);
+    // Fetch top tracks for the artist
+    this.artistRequest.setArtistID(artistID);
+    const topTracks = await this.artistRequest.fetchTopTracks();
+    console.log("Top Tracks:", topTracks);
+    // Display the top tracks
+    this.displayTracks(topTracks);
   }
 
   displayTracks(tracks) {
