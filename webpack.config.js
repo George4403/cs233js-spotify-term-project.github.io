@@ -49,21 +49,13 @@ module.exports = {
       ],
     },
     plugins: [
+      new Dotenv(),
       new htmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/index.html"),
         chunks: ["weather"],
         inject: "body",
         filename: "index.html",
-      }),
-      /* new copyPlugin({
-        patterns: [
-          {
-            from: path.resolve(__dirname, "src/images"),
-            to: path.resolve(__dirname, "dist/images"),
-          },
-        ],
-      }),
-      */
-    ],
+      })
+    ]
 }
   
