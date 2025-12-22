@@ -22,6 +22,7 @@ export class SpotifyArtistRequest {
     }/top-tracks?market=US`;
   }
 
+  // Get the request initialization object
   get init() {
     return {
       method: "GET",
@@ -31,24 +32,8 @@ export class SpotifyArtistRequest {
     };
   }
 
+  // Get the request type
   get type() {
     return "artist-top-tracks";
   }
-
-  /*
-  // High-level helper to fetch top tracks for the given artist ID
-  async getTopTracks(artistID) {
-    this.setArtistID(artistID);
-    const req = new Request(this.url, this);
-    const response = await fetch(req);
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(
-        `Top tracks request failed (${response.status}): ${text}`
-      );
-    }
-
-    const data = await response.json();
-    return data.tracks;
-  }*/
 }

@@ -39,7 +39,7 @@ export class SpotifyHttpClient {
     if (request.type === "artist-top-tracks") {
       return json.tracks.map((trackJson) => new SpotifyTrack(trackJson));
     }
-
+    // Default: return raw JSON
     return json;
   }
 }
