@@ -1,3 +1,4 @@
+import { SpotifyHttpClient } from "../vendor/spotify/client/SpotifyHttpClient.js";
 import { SpotifyOAuthTokenRequest } from "../vendor/spotify/api/spotifyOAuthTokenRequest.js";
 import { SpotifySearchRequest } from "../vendor/spotify/api/spotifySearchRequest.js";
 import { SpotifyArtistRequest } from "../vendor/spotify/api/spotifyArtistRequest.js";
@@ -38,16 +39,23 @@ class Artist {
   // Handle form submission
   async onFormSubmit(event) {
     event.preventDefault();
-
+    // Obtain access token
+    const tokenRequest = new SpotifyOAuthTokenRequest(
+      this.clientID,
+      this.clientSecret
+    );
+    // Fetch and set the access token
+    this.accessToken = await fetch(tokenRequest)
+      .then((response) => response.json())
+      .then((data) => data.access_token);
     try {
-      this.accessToken = await this.tokenRequest.getAccessToken();
-      console.log("Access Token:", this.accessToken);
-      // Initialize Spotify API Request Handlers with the access token
+      // Initialize search and artist requests with the access token
       this.searchRequest = new SpotifySearchRequest(this.accessToken);
       this.artistRequest = new SpotifyArtistRequest(this.accessToken);
       // Perform artist search
       await this.artistSearch();
     } catch (error) {
+      // Handle errors
       console.error("Error during form submission:", error);
     }
   }
@@ -55,19 +63,23 @@ class Artist {
   // Search for artist and get top tracks
   async artistSearch() {
     const artistName = this.$artist.value;
-    console.log("Search for " + artistName);
+    // Set artist name in search request
+    this.searchRequest.setArtist(artistName);
+    // Initialize Spotify HTTP Client
+    const client = new SpotifyHttpClient(this.accessToken);
+    // Get artist name from input
+    const searchRequest = new SpotifySearchRequest(this.accessToken);
+    searchRequest.setArtist(artistName);
+    // Send search request
+    const artists = await client.send(searchRequest);
+    const artist = artists[0];
+    // Get top tracks for the artist
+    const tracksRequest = new SpotifyArtistRequest(this.accessToken);
+    tracksRequest.setArtistID(artist.getId());
 
-    try {
-      const artistID = await this.searchRequest.searchArtist(artistName);
-      console.log("Artist ID:", artistID);
-
-      const tracks = await this.artistRequest.getTopTracks(artistID);
-      console.log("Top Tracks:", tracks);
-
-      this.displayTracks(tracks);
-    } catch (error) {
-      console.error("Error during artist search:", error);
-    }
+    const topTracks = await client.send(tracksRequest);
+    // Display the top tracks
+    this.displayTracks(topTracks);
   }
 
   displayTracks(tracks) {
@@ -87,7 +99,7 @@ class Artist {
 
       // Create an image element for the album cover
       const albumCover = document.createElement("img");
-      albumCover.src = track.album.images[1].url;
+      albumCover.src = track.getAlbum().getImageUrl(1);
       albumCover.alt = "Album Cover";
 
       // Create a span for the track name
@@ -117,9 +129,11 @@ class Artist {
           trackDetails.classList.add("track-details");
           trackDetails.innerHTML = `
                         <p>Album: ${track.album.name}</p>
-                        <p>Track Number: ${track.track_number}</p>
-                        <p>Release Date: ${track.album.release_date}</p>
-                        <a href="${track.external_urls.spotify}" target="_blank">Listen on Spotify</a>
+                        <p>Track Number: ${track.getTrackNumber()}</p>
+                        <p>Release Date: ${track
+                          .getAlbum()
+                          .getReleaseDate()}</p>
+                        <a href="${track.getPreviewUrl()}" target="_blank">Listen on Spotify</a>
                     `;
           listItem.insertAdjacentElement("afterend", trackDetails);
         }
