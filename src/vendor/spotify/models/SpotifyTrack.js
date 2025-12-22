@@ -1,5 +1,6 @@
 import { SpotifyAlbum } from "./SpotifyAlbum.js";
-
+// Model class for Spotify Track
+// Represents a track in the Spotify API
 export class SpotifyTrack {
   constructor(json) {
     this.name = json.name;

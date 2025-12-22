@@ -1,3 +1,5 @@
+// Model class for Spotify Album
+// Represents an album in the Spotify API
 export class SpotifyAlbum {
   constructor(json) {
     this.name = json.name;
