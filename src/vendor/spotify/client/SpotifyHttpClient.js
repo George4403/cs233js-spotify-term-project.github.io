@@ -9,9 +9,15 @@ export class SpotifyHttpClient {
 
   // Send the request and return mapped response
   async send(request) {
-    const response = await fetch(request);
+    // Create the request
+    const req = new Request(request.url, request.init);
+    console.log("Request URL:", req.url);
+    // Send the request
+    const response = await fetch(req);
+    // Check for HTTP errors
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const text = await response.text();
+      throw new Error(`HTTP error! status: ${response.status} -- ${text}`);
     }
 
     // Parse JSON response

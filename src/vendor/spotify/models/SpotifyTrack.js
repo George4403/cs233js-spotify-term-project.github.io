@@ -6,9 +6,10 @@ export class SpotifyTrack {
     this.id = json.id;
     this.album = new SpotifyAlbum(json.album);
     this.artists = json.artists;
-    this.durationMs = json.durationMs;
+    this.durationMs = json.duration_ms;
     this.popularity = json.popularity;
-    this.previewUrl = json.previewUrl;
+    this.previewUrl = json.external_urls?.spotify ?? null;
+    this.trackNumber = json.track_number;
   }
   getName() {
     return this.name;
@@ -36,5 +37,9 @@ export class SpotifyTrack {
 
   getPreviewUrl() {
     return this.previewUrl;
+  }
+
+  getTrackNumber() {
+    return this.trackNumber;
   }
 }

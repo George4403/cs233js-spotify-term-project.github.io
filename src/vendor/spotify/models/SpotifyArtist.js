@@ -4,7 +4,7 @@ export class SpotifyArtist {
     this.id = json.id;
     this.genres = json.genres;
     this.popularity = json.popularity;
-    this.imageUrl = json.imageUrl;
+    this.imageUrl = json.preview_url;
   }
 
   getName() {

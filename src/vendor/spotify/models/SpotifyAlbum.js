@@ -2,9 +2,9 @@ export class SpotifyAlbum {
   constructor(json) {
     this.name = json.name;
     this.id = json.id;
-    this.releaseDate = json.releaseDate;
-    this.totalTracks = json.totalTracks;
-    this.imageUrl = json.imageUrl;
+    this.releaseDate = json.release_date;
+    this.totalTracks = json.total_tracks;
+    this.imageUrl = json.images ?? [];
   }
 
   getName() {
@@ -23,7 +23,7 @@ export class SpotifyAlbum {
     return this.totalTracks;
   }
 
-  getImageUrl() {
-    return this.imageUrl;
+  getImageUrl(size = 1) {
+    return this.imageUrl[size]?.url ?? "";
   }
 }
