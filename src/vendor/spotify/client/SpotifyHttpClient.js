@@ -10,8 +10,7 @@ import { SpotifyTrack } from "../models/SpotifyTrack.js";
  * @example <caption>Using SpotifyHttpClient to search for an artist</caption>
  * const accessToken = "MY_SECRET";
  * const client = new SpotifyHttpClient(accessToken);
- * const searchRequest = new SpotifySearchRequest(accessToken);
- * searchRequest.setArtist("Adele");
+ * const searchRequest = new SpotifyArtistSearchRequest("Adele");
  * const artists = await client.send(searchRequest);
  * console.log(artists);
  */
@@ -34,6 +33,10 @@ export default class SpotifyHttpClient {
    */
   async send(request) {
     // Create the request
+    let init = request.init;
+    init.method = request.method;
+
+
     const req = new Request(request.url, request.init);
 
     if(request.type !== "oauth-token") {
@@ -66,20 +69,23 @@ export default class SpotifyHttpClient {
 
 
     // Map and return the response
-    return this.mapResponse(json, request);
+    return this.mapResponse(json, request.type);
   }
 
+
+
+
   // Map JSON response to appropriate models
-  mapResponse(json, request) {
+  mapResponse(json, type) {
     // Search artists
-    if (request.type === "artist-search") {
+    if (type === "artist-search") {
       return json.artists.items.map(
         (artistJson) => new SpotifyArtist(artistJson)
       );
     }
 
     // Get artist's top tracks
-    if (request.type === "artist-top-tracks") {
+    if (type === "artist-top-tracks") {
       return json.tracks.map((trackJson) => new SpotifyTrack(trackJson));
     }
     // Default: return raw JSON

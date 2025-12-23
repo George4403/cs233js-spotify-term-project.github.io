@@ -1,10 +1,8 @@
 import SpotifyHttpClient from "../vendor/spotify/client/SpotifyHttpClient.js";
 import SpotifyOAuthTokenRequest from "../vendor/spotify/api/SpotifyOAuthTokenRequest.js";
-import SpotifySearchRequest from "../vendor/spotify/api/SpotifySearchRequest.js";
+import SpotifyArtistSearchRequest from "../vendor/spotify/api/SpotifyArtistSearchRequest.js";
 import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js";
 import "../styles/styles.css";
-
-console.log("Foo is: ", process.env.foo);
 
 
 
@@ -56,7 +54,7 @@ class App {
     const artistName = this.$artist.value;
 
     // Initialize search and artist requests with the access token
-    const searchRequest = new SpotifySearchRequest(artistName);
+    const searchRequest = new SpotifyArtistSearchRequest(artistName);
     const tracksRequest = new SpotifyArtistRequest();
     
 
