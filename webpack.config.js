@@ -6,7 +6,7 @@ const copyPlugin = require("copy-webpack-plugin");
 module.exports = {
     mode: 'development',
     entry: {
-      weather: './src/js/artist.js',
+      spotify: './src/js/App.js',
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -52,7 +52,7 @@ module.exports = {
       // new Dotenv(),
       new htmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/index.html"),
-        chunks: ["weather"],
+        chunks: ["spotify"],
         inject: "body",
         filename: "index.html",
       })
