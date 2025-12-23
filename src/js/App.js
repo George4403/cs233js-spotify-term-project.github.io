@@ -1,11 +1,32 @@
-import { SpotifyHttpClient } from "../vendor/spotify/client/SpotifyHttpClient.js";
-import { SpotifyOAuthTokenRequest } from "../vendor/spotify/api/spotifyOAuthTokenRequest.js";
-import { SpotifySearchRequest } from "../vendor/spotify/api/spotifySearchRequest.js";
-import { SpotifyArtistRequest } from "../vendor/spotify/api/spotifyArtistRequest.js";
+import SpotifyHttpClient from "../vendor/spotify/client/SpotifyHttpClient.js";
+import SpotifyOAuthTokenRequest from "../vendor/spotify/api/SpotifyOAuthTokenRequest.js";
+import SpotifySearchRequest from "../vendor/spotify/api/SpotifySearchRequest.js";
+import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js";
 import "../styles/styles.css";
 
-class Artist {
+console.log("Foo is: ", process.env.foo);
+
+
+
+// Spotify API Credentials
+const clientID = "4c15e19067fd4e66b8b075a6e53839ab";
+const clientSecret = "1a0b2b1255c94798ab70d92facf6c42f";
+
+// Initialize Spotify OAuth Token Request
+const tokenRequest = new SpotifyOAuthTokenRequest(
+  clientID,
+  clientSecret
+);
+
+const client = new SpotifyHttpClient();
+
+
+class App {
+
+
   constructor() {
+
+
     this.artistName = {
       artist: "",
       tracks: {},
@@ -13,74 +34,47 @@ class Artist {
       selectedTrack: null,
     };
 
-    // Spotify API Credentials
-    this.clientID = "4c15e19067fd4e66b8b075a6e53839ab";
-    this.clientSecret = "1a0b2b1255c94798ab70d92facf6c42f";
-    this.accessToken = null;
 
-    // Initialize Spotify OAuth Token Request
-    this.tokenRequest = new SpotifyOAuthTokenRequest(
-      this.clientID,
-      this.clientSecret
-    );
-    // Spotify API Request Handlers
-    this.searchRequest = null;
-    this.artistRequest = null;
+    client.send(tokenRequest);
+
     // DOM Elements
     this.$topTrack = document.getElementById("#topTrack");
     this.$form = document.getElementById("trackForm");
     this.$artist = document.querySelector("#artist");
     this.$track = document.querySelector("#trackList");
-    this.onFormSubmit = this.onFormSubmit.bind(this);
     this.displayTracks = this.displayTracks.bind(this);
-    this.$form.addEventListener("submit", this.onFormSubmit);
+    this.$form.addEventListener("submit", this.artistSearch.bind(this));
   }
 
-  // Handle form submission
-  async onFormSubmit(event) {
-    event.preventDefault();
-    // Obtain access token
-    const tokenRequest = new SpotifyOAuthTokenRequest(
-      this.clientID,
-      this.clientSecret
-    );
-    // Fetch and set the access token
-    this.accessToken = await fetch(tokenRequest)
-      .then((response) => response.json())
-      .then((data) => data.access_token);
-    try {
-      // Initialize search and artist requests with the access token
-      this.searchRequest = new SpotifySearchRequest(this.accessToken);
-      this.artistRequest = new SpotifyArtistRequest(this.accessToken);
-      // Perform artist search
-      await this.artistSearch();
-    } catch (error) {
-      // Handle errors
-      console.error("Error during form submission:", error);
-    }
-  }
 
   // Search for artist and get top tracks
-  async artistSearch() {
+  async artistSearch(event) {
+
+    event.preventDefault();
+
+    // Get user input.
     const artistName = this.$artist.value;
-    // Set artist name in search request
-    this.searchRequest.setArtist(artistName);
-    // Initialize Spotify HTTP Client
-    const client = new SpotifyHttpClient(this.accessToken);
-    // Get artist name from input
-    const searchRequest = new SpotifySearchRequest(this.accessToken);
-    searchRequest.setArtist(artistName);
+
+    // Initialize search and artist requests with the access token
+    const searchRequest = new SpotifySearchRequest(artistName);
+    const tracksRequest = new SpotifyArtistRequest();
+    
+
     // Send search request
     const artists = await client.send(searchRequest);
     const artist = artists[0];
-    // Get top tracks for the artist
-    const tracksRequest = new SpotifyArtistRequest(this.accessToken);
+
     tracksRequest.setArtistID(artist.getId());
 
     const topTracks = await client.send(tracksRequest);
     // Display the top tracks
     this.displayTracks(topTracks);
   }
+
+
+
+
+
 
   displayTracks(tracks) {
     // Assuming there is a container element with the ID 'trackList' on your HTML
@@ -152,5 +146,5 @@ class Artist {
 
 // Initialize the Artist class when the window loads
 window.onload = () => {
-  new Artist();
+  new App();
 };

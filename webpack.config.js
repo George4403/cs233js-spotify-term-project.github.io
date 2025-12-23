@@ -49,7 +49,7 @@ module.exports = {
       ],
     },
     plugins: [
-      new Dotenv(),
+      // new Dotenv(),
       new htmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/index.html"),
         chunks: ["weather"],

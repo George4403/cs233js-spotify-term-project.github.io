@@ -1,5 +1,7 @@
 // Class to handle Spotify OAuth Token Request
-export class SpotifyOAuthTokenRequest extends Request {
+export default class SpotifyOAuthTokenRequest {
+
+
   // The ID of the registered Spotify application that will access the API.
   // Unnecessary to store as instance variable but included for completeness.
   #clientId;
@@ -9,28 +11,38 @@ export class SpotifyOAuthTokenRequest extends Request {
   #clientSecret;
 
   // The URL endpoint for obtaining the OAuth token from Spotify.
-  static url = "https://accounts.spotify.com/api/token";
+  url = "https://accounts.spotify.com/api/token";
 
   // The HTTP method (verb) used for the request.
-  static method = "POST";
+  method = "POST";
 
-  static headers = {
+  headers = {
     "Content-Type": "application/x-www-form-urlencoded",
   };
 
   // Initialize with client ID and client secret
-  constructor(clientID, clientSecret) {
-    let requestInit = {
-      method: SpotifyOAuthTokenRequest.method,
-      headers: SpotifyOAuthTokenRequest.headers,
-      body: `grant_type=client_credentials&client_id=${clientID}&client_secret=${clientSecret}`,
-    };
-    super(SpotifyOAuthTokenRequest.url, requestInit);
-    this.#clientId = clientID;
+  constructor(clientId, clientSecret) {
+    this.#clientId = clientId;
     this.#clientSecret = clientSecret;
   }
 
 
 
+
+
+  // Get the request initialization object
+  get init() {
+    return {
+      method: "POST",
+      headers: this.headers,
+      body: `grant_type=client_credentials&client_id=${this.#clientId}&client_secret=${this.#clientSecret}`,
+    };
+  }
+
+
+  get type() {
+    return "oauth-token"
+  }
+  
 
 }

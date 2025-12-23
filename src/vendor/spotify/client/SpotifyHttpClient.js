@@ -1,16 +1,47 @@
 import { SpotifyArtist } from "../models/SpotifyArtist.js";
 import { SpotifyTrack } from "../models/SpotifyTrack.js";
 
-// Class to handle Spotify HTTP Client
-export class SpotifyHttpClient {
+
+
+/**
+ * Spotify HTTP Client for sending requests to Spotify API.
+ * @class
+ * @param {string} accessToken - The access token for Spotify API.
+ * @example <caption>Using SpotifyHttpClient to search for an artist</caption>
+ * const accessToken = "MY_SECRET";
+ * const client = new SpotifyHttpClient(accessToken);
+ * const searchRequest = new SpotifySearchRequest(accessToken);
+ * searchRequest.setArtist("Adele");
+ * const artists = await client.send(searchRequest);
+ * console.log(artists);
+ */
+export default class SpotifyHttpClient {
+
+
+  // Access token for Spotify API.
+  #accessToken;
+
+
   constructor(accessToken) {
-    this.accessToken = accessToken;
+    this.#accessToken = accessToken;
   }
 
-  // Send the request and return mapped response
+
+
+  /*  Send a Spotify API request.
+   *  @param {object} request - The Spotify API request object.
+   *  @returns {Promise<object>} - A promise that resolves to the response data.
+   */
   async send(request) {
     // Create the request
     const req = new Request(request.url, request.init);
+
+    if(request.type !== "oauth-token") {
+      // Add Authorization header for non-oauth-token requests
+      req.headers.set("Authorization", `Bearer ${this.#accessToken}`);
+    }
+
+
     console.log("Request URL:", req.url);
     // Send the request
     const response = await fetch(req);
@@ -22,6 +53,18 @@ export class SpotifyHttpClient {
 
     // Parse JSON response
     const json = await response.json();
+
+
+    if(request.type === "oauth-token") {
+
+      this.#accessToken =json.access_token;
+      // Save the access token for future requests.
+      // It could be automaticallly attached to future requests here if desired.
+      // as part of the request.headers collection.
+      return json;
+    }
+
+
     // Map and return the response
     return this.mapResponse(json, request);
   }
