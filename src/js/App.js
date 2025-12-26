@@ -5,7 +5,6 @@ import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js"
 import "../styles/styles.css";
 
 
-
 // Spotify API Credentials
 const clientID = "4c15e19067fd4e66b8b075a6e53839ab";
 const clientSecret = "1a0b2b1255c94798ab70d92facf6c42f";
@@ -56,7 +55,7 @@ class App {
     // Initialize search and artist requests with the access token
     const searchRequest = new SpotifyArtistSearchRequest(artistName);
     const tracksRequest = new SpotifyArtistRequest();
-    
+
 
     // Send search request
     const artists = await client.send(searchRequest);
@@ -67,6 +66,8 @@ class App {
     const topTracks = await client.send(tracksRequest);
     // Display the top tracks
     this.displayTracks(topTracks);
+
+
   }
 
 
@@ -109,13 +110,13 @@ class App {
       listItem.addEventListener("click", () => {
         // Check if track details already exist
         const existingDetails = listItem.nextElementSibling;
-        if (
-          existingDetails &&
-          existingDetails.classList.contains("track-details")
-        ) {
+        if (existingDetails && existingDetails.classList.contains("track-details"))
+        {
           // If details exist, toggle their visibility
           existingDetails.classList.toggle("hidden");
-        } else {
+        }
+        else
+        {
           // If details don't exist, render them
           const trackDetails = document.createElement("div");
           trackDetails.classList.add("track-details");
@@ -123,8 +124,8 @@ class App {
                         <p>Album: ${track.album.name}</p>
                         <p>Track Number: ${track.getTrackNumber()}</p>
                         <p>Release Date: ${track
-                          .getAlbum()
-                          .getReleaseDate()}</p>
+              .getAlbum()
+              .getReleaseDate()}</p>
                         <a href="${track.getPreviewUrl()}" target="_blank">Listen on Spotify</a>
                     `;
           listItem.insertAdjacentElement("afterend", trackDetails);

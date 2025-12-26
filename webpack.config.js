@@ -1,6 +1,6 @@
 const webpack = require('webpack');
 const path = require('path');
-const htmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (env) => {
 
@@ -10,6 +10,7 @@ module.exports = (env) => {
     mode: 'development',
     entry: {
       spotify: './src/js/App.js',
+      jsx: './src/js/MyComponent.js'
     },
     output: {
       path: path.resolve(__dirname, "dist"),
@@ -18,29 +19,29 @@ module.exports = (env) => {
       clean: true,
     },
     target: 'web',
-    devServer: { 
+    devServer: {
       static: "./dist"
-    }, 
-    devtool: 'source-map', 
+    },
+    devtool: 'source-map',
     module: {
-      rules: [	
-        { 
+      rules: [
+        {
           test: /\.js$/i,
           exclude: /(node_modules)/,
-          use: { 
+          use: {
             loader: 'babel-loader'
           }
-        }, 
-        { 
-          test: /\.css$/i, 
-          use: [ 'style-loader', 'css-loader' ]		
         },
-        { 
-          test: /.s[ac]ss$/i, 
-          use: [ 'style-loader', 'css-loader' , 'sass-loader']		
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader']
         },
-        {  
-          test: /\.(svg|eot|ttf|woff|woff2)$/i,  
+        {
+          test: /.s[ac]ss$/i,
+          use: ['style-loader', 'css-loader', 'sass-loader']
+        },
+        {
+          test: /\.(svg|eot|ttf|woff|woff2)$/i,
           type: "asset/resource",
         },
         {
@@ -51,12 +52,15 @@ module.exports = (env) => {
     },
     plugins: [
       // new Dotenv(),
-      new htmlWebpackPlugin({
+      new webpack.ProvidePlugin({
+        jsx: ["@ocdla/view/jsx-runtime", "default"]
+      }),
+      new HtmlWebpackPlugin({
         template: path.resolve(__dirname, "./src/index.html"),
         chunks: ["spotify"],
         inject: "body",
         filename: "index.html",
       })
     ]
-};
+  };
 };
