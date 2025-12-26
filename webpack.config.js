@@ -1,9 +1,12 @@
 const webpack = require('webpack');
 const path = require('path');
 const htmlWebpackPlugin = require("html-webpack-plugin");
-const copyPlugin = require("copy-webpack-plugin");
 
-module.exports = {
+module.exports = (env) => {
+
+  console.log(env);
+
+  return {
     mode: 'development',
     entry: {
       spotify: './src/js/App.js',
@@ -25,18 +28,16 @@ module.exports = {
           test: /\.js$/i,
           exclude: /(node_modules)/,
           use: { 
-            loader: 'babel-loader', 
-            options: {
-            presets: ['@babel/preset-env']
-          }}
+            loader: 'babel-loader'
+          }
         }, 
         { 
           test: /\.css$/i, 
           use: [ 'style-loader', 'css-loader' ]		
         },
         { 
-            test: /.s[ac]ss$/i, 
-            use: [ 'style-loader', 'css-loader' , 'sass-loader']		
+          test: /.s[ac]ss$/i, 
+          use: [ 'style-loader', 'css-loader' , 'sass-loader']		
         },
         {  
           test: /\.(svg|eot|ttf|woff|woff2)$/i,  
@@ -57,5 +58,5 @@ module.exports = {
         filename: "index.html",
       })
     ]
-}
-  
+};
+};
