@@ -37,19 +37,9 @@ Built with Vanilla JavaScript, HTML, and Bootstrap CSS
            ├── SpotifyTrack.js      # Artists tracks in the spotify api.
 ```
 
-
 ## Installation
-* <code>npm update</code>
 
-
-## Clone this repository
-
-```
-git clone https://github.com/George4403/cs233js-spotify-term-project.git
-```
-
-# Run Project
-
-```
-npm run watch
-```
+-   <code>git pull</code> or <code>git clone ...</code>
+-   <code>git submodule update --init --recursive</code>
+-   <code>npm update</code>
+-   <code>npm run build</code> or <code>npm run watch</code>
