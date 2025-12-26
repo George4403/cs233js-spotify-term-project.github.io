@@ -20,22 +20,27 @@ Built with Vanilla JavaScript, HTML, and Bootstrap CSS
 ```
 /src
  ├── /js
-      ├── artist.js       # Core logic (Spotify API integration, DOM manipulation)
+      ├── App.js    # Entry point.
  ├── /styles
-      ├── style.css       # Styles
- ├── index.html      # Main page
- ├── /vendor\spotify
+      ├── style.css
+ ├── index.html
+ ├── /vendor/spotify
       ├── /api
-           ├── spotifyArtistRequest.js      # Handles artists top tracks request
-           ├── spotifyOAuthTokenRequest.js      # Handles OAuth token request
-           ├── spotifySearchRequest.js      # Handles artist search request
+           ├── SpotifyArtistRequest.js      # Handles artists top tracks request.
+           ├── SpotifyOAuthTokenRequest.js  # Handles OAuth token request.
+           ├── SpotifySearchRequest.js      # Handles artist search request.
       ├── /client
-           ├── SpotifyHttpClient.js      # Handles spotify http client
+           ├── SpotifyHttpClient.js      # Handles Spotify API requests.
       ├── /models
-           ├── SpotifyAlbum.js      # Artists album in the spotify api
-           ├── SpotifyArtist.js      # Artists in the spotify api
-           ├── SpotifyTrack.js      # Artists tracks in the spotify api
+           ├── SpotifyAlbum.js      # Artists album in the spotify api.
+           ├── SpotifyArtist.js     # Artists in the spotify api.
+           ├── SpotifyTrack.js      # Artists tracks in the spotify api.
 ```
+
+
+## Installation
+* <code>npm update</code>
+
 
 ## Clone this repository
 
