@@ -1,7 +1,7 @@
 {
-  "name": "termproject",
+  "name": "Spotify API Examples",
   "version": "1.0.0",
-  "description": "",
+  "description": "An application that uses the Spotify Web API to search for and display information about artists, albums, and tracks.",
   "main": "index.html",
   "scripts": {
     "webpack": "webpack",
@@ -34,6 +34,7 @@
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1",
-    "@ocdla/view": "file:./dev_modules/@ocdla/view"
+    "react": "file:./dev_modules/@ocdla/view",
+    "react-dom": "file:./dev_modules/@ocdla/view"
   }
 }

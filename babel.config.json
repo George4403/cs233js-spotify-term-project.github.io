@@ -1,14 +1,14 @@
 {
-  "plugins": [
-    [
-      "@babel/plugin-transform-react-jsx",
-      {
-        "pragma": "jsx", // defaults to React.createElement
-        "pragmaFrag": "Fragment", // defaults to React.Fragment
-        "throwIfNamespace": false, // defaults to true
-        "runtime": "classic", // defaults to classic
-        // "importSource": "@ocdla/jsx-runtime" // defaults to react
-      }
+    "plugins": [
+        [
+            "@babel/plugin-transform-react-jsx",
+            {
+                "pragma": "jsx", // Defaults to React.createElement.
+                "pragmaFrag": "Fragment", // Defaults to React.Fragment.
+                "throwIfNamespace": false, // Defaults to true.
+                "runtime": "classic" // Defaults to classic.
+                // "importSource": "react/jsx-runtime" // Defaults to react/jsx-runtime.
+            }
+        ]
     ]
-  ]
 }
