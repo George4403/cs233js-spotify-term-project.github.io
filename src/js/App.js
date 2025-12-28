@@ -2,7 +2,6 @@ import SpotifyHttpClient from "../vendor/spotify/client/SpotifyHttpClient.js";
 import SpotifyOAuthTokenRequest from "../vendor/spotify/api/SpotifyOAuthTokenRequest.js";
 import SpotifyArtistSearchRequest from "../vendor/spotify/api/SpotifyArtistSearchRequest.js";
 import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js";
-import "../styles/styles.css";
 
 
 // Spotify API Credentials
@@ -18,7 +17,7 @@ const tokenRequest = new SpotifyOAuthTokenRequest(
 const client = new SpotifyHttpClient();
 
 
-class App {
+export default class App {
 
 
   constructor() {
@@ -143,7 +142,3 @@ class App {
   }
 }
 
-// Initialize the Artist class when the window loads
-window.onload = () => {
-  new App();
-};
