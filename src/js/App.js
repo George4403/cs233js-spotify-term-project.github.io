@@ -63,10 +63,10 @@ export default class App {
     tracksRequest.setArtistID(artist.getId());
 
     const topTracks = await client.send(tracksRequest);
-    // Display the top tracks
+
+
+    // Display the top tracks.
     this.displayTracks(topTracks);
-
-
   }
 
 
@@ -75,6 +75,7 @@ export default class App {
 
 
   displayTracks(tracks) {
+
     // Assuming there is a container element with the ID 'trackList' on your HTML
     const trackListContainer = document.getElementById("trackList");
 
