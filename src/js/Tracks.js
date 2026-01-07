@@ -1,13 +1,13 @@
-import { Track } from "./Track.js";
+import { TrackListItem } from "./components/TrackListItem.js";
 
-export function Tracks(tracks = []) {
+export function Tracks({ tracks }) {
     // Create a container for the track list
-    const trackList = document.createElement("ol");
-    trackList.classList.add("track-list");
+    const ol = document.createElement("ol");
+
     // Iterate through each track and create Track components
     tracks.forEach((track) => {
-        const trackItem = Track(track);
-        trackList.appendChild(trackItem);
+        ol.appendChild(TrackListItem({ track }));
     });
-    return trackList;
+    // Return the container with all track components
+    return ol;
 }

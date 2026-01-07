@@ -55,6 +55,6 @@ export default class App {
         const container = document.getElementById("trackList");
         container.innerHTML = "";
         // Append new tracks
-        container.appendChild(Tracks(tracks));
+        container.appendChild(Tracks({ tracks }));
     }
 }

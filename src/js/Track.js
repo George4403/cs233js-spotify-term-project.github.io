@@ -37,6 +37,7 @@ export function Track(track) {
             <p>Release Date: ${track.getAlbum().getReleaseDate()}</p>
             <a href="${track.getPreviewUrl()}" target="_blank">Listen on Spotify</a>
         `;
+        // Insert the details after the list item
         li.insertAdjacentElement("afterend", details);
     });
 
