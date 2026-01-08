@@ -4,11 +4,12 @@
   "description": "An application that uses the Spotify Web API to search for and display information about artists, albums, and tracks.",
   "main": "index.html",
   "scripts": {
+    "docs": "jsdoc -r ./src/vendor/spotify/",
     "webpack": "webpack",
     "build": "webpack --config webpack.config.js",
     "watch": "webpack serve --env foo=bar --open",
     "test": "jest",
-    "babel:test": "BABEL_SHOW_CONFIG_FOR=./src/js/MyComponent.js npx babel --config-file ./babel.config.json src/js/MyComponent.js --out-file MyComponent-transpiled.scratch.js"
+    "babel:test": "BABEL_SHOW_CONFIG_FOR=./src/js/SpotifyApp.js npx babel --config-file ./babel.config.json src/js/SpotifyApp.js --out-file SpotifyApp-transpiled.scratch.js"
   },
   "devDependencies": {
     "@babel/cli": "^7.18.10",
@@ -34,7 +35,7 @@
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1",
-    "react": "file:./dev_modules/@ocdla/view",
-    "react-dom": "file:./dev_modules/@ocdla/view/view-dom"
+    "react": "file:./dev_modules/@ocdla/view/react",
+    "react-dom": "file:./dev_modules/@ocdla/view/react-dom"
   }
 }
