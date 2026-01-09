@@ -5,7 +5,7 @@ export class SpotifyTrack {
   constructor(json) {
     this.name = json.name;
     this.id = json.id;
-    this.album = new SpotifyAlbum(json.album);
+    this.album = SpotifyAlbum.fromJson(json.album);
     this.artists = json.artists;
     this.durationMs = json.duration_ms;
     this.popularity = json.popularity;
