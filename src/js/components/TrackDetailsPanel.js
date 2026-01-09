@@ -17,7 +17,7 @@ export default function TrackDetailsPanel({
     // append the various details to the div
     div.appendChild(AlbumName({ name: albumName }));
     div.appendChild(TrackNumber({ number: trackNumber }));
-    div.appendChild(ReleaseDate({ date: releaseDate }));
+    div.appendChild(ReleaseDate({ date: releaseDate })); // TODO: Format date
     div.appendChild(ListenOnSpotifyLink({ url: spotifyUrl }));
 
     // return the created div element

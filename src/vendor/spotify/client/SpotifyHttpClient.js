@@ -1,5 +1,6 @@
 import { SpotifyArtist } from "../models/SpotifyArtist.js";
 import { SpotifyTrack } from "../models/SpotifyTrack.js";
+import SpotifyOAuthTokenRequest from "../api/SpotifyOAuthTokenRequest.js";
 
 /**
  * Spotify HTTP Client for sending requests to Spotify API.
@@ -15,47 +16,16 @@ import { SpotifyTrack } from "../models/SpotifyTrack.js";
 export default class SpotifyHttpClient {
     // Access token for Spotify API.
     #accessToken;
-    // Expiration time of the access token.
-    #tokenExpiresAt = null;
-    // Current token request in progress.
-    #tokenRequest = null;
-    // Promise for refreshing token.
-    #refreshingToken = null;
-    constructor(accessToken) {
-        this.#accessToken = accessToken;
-    }
 
-    // Ensure the access token is valid, refresh if expired.
-    async #ensureValidToken() {
-        const now = Date.now();
-        const buffer = 60000; // 1 minute buffer
+    #authorizationRequest;
+    #counter = 0;
 
-        if (!this.#tokenExpiresAt) return;
-        // Token is still valid
-        if (now < this.#tokenExpiresAt - buffer) return;
-        // Token expired, refresh it
-        if (this.#refreshingToken) {
-            await this.#refreshingToken;
-            return;
-        }
-        // Start token refresh
-        if (!this.#tokenRequest) {
-            throw new Error(
-                "Access token expired and no token request provided."
-            );
-        }
-        // Begin refreshing token
-        this.#refreshingToken = (async () => {
-            try {
-                // Send token request
-                await this.send(this.#tokenRequest);
-            } finally {
-                // Clear the refreshing token promise
-                this.#refreshingToken = null;
-            }
-        })();
-        // Wait for the token to be refreshed
-        await this.#refreshingToken;
+    static MAX_REQUESTS = 5;
+    constructor(clientId, clientSecret) {
+        this.#authorizationRequest = new SpotifyOAuthTokenRequest(
+            clientId,
+            clientSecret
+        );
     }
 
     /*  Send a Spotify API request.
@@ -63,50 +33,56 @@ export default class SpotifyHttpClient {
      *  @returns {Promise<object>} - A promise that resolves to the response data.
      */
     async send(request) {
-        // Ensure valid token for non-oauth-token requests
-        if (request.type !== "oauth-token") {
-            await this.#ensureValidToken(this.#tokenRequest);
-        } else {
-            // Save the token request for future refreshes
-            this.#tokenRequest = request;
-        }
         // Create the request
         let init = request.init;
         init.method = request.method;
 
+        // Define counter for retry attempts
         const req = new Request(request.url, request.init);
 
+        // Add Authorization header for non-oauth-token requests
         if (request.type !== "oauth-token") {
-            // Add Authorization header for non-oauth-token requests
             req.headers.set("Authorization", `Bearer ${this.#accessToken}`);
         }
 
-        console.log("Request URL:", req.url);
-        console.log("Used Token: ", this.#accessToken);
         // Send the request
         const response = await fetch(req);
+
+        // Parse JSON response
+        const json = await response.json();
+
+        // If counter exceeds 5 attempts, throw error
+        if (this.#counter >= SpotifyHttpClient.MAX_REQUESTS) {
+            throw new Error("Max retry attempts exceeded.");
+        }
+
+        // Increment counter for rate limiting and authorization errors
+        if ([401, 403, 429].includes(response.status)) {
+            this.#counter += 1;
+        }
+
+        // If unauthorized, attempt to get a new token and retry the request.
+        if (response.status === 401) {
+            //this.#counter += 1;
+            return this.send(this.#authorizationRequest).then(() =>
+                this.send(request)
+            );
+        }
+
+        if (request.type === "oauth-token") {
+            this.#accessToken = json.access_token;
+            // Save the access token for future requests.
+            // It could be automaticallly attached to future requests here if desired.
+            // as part of the request.headers collection.
+            return json;
+        }
+
         // Check for HTTP errors
         if (!response.ok) {
             const text = await response.text();
             throw new Error(
                 `HTTP error! status: ${response.status} -- ${text}`
             );
-        }
-
-        // Parse JSON response
-        const json = await response.json();
-
-        if (request.type === "oauth-token") {
-            this.#accessToken = json.access_token;
-            // Set token expiration time
-            if (json.expires_in) {
-                this.#tokenExpiresAt = Date.now() + json.expires_in * 1000;
-            }
-            // Save the access token for future requests.
-            // It could be automaticallly attached to future requests here if desired.
-            // as part of the request.headers collection.
-            console.log("Obtained Access Token:", this.#accessToken);
-            return json;
         }
 
         // Map and return the response

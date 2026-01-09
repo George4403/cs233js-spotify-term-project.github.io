@@ -32,6 +32,7 @@ export function TrackListItem({ track }) {
             return;
         }
 
+        // TODO: Render track details panel outside of event listener
         // Create and insert the track details panel
         const detailsPanel = TrackDetailsPanel({
             albumName: track.album?.name,

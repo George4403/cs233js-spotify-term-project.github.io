@@ -37,17 +37,22 @@ export default class App {
         // Initialize search and artist requests with the access token
         const searchRequest = new SpotifyArtistSearchRequest(artistName);
         const tracksRequest = new SpotifyArtistRequest();
+        let topTracks = [];
 
-        // Send search request
-        const artists = await client.send(searchRequest);
-        const artist = artists[0];
+        try {
+            // Send search request
+            const artists = await client.send(searchRequest);
+            const artist = artists[0];
 
-        tracksRequest.setArtistID(artist.getId());
+            tracksRequest.setArtistID(artist.getId());
 
-        const topTracks = await client.send(tracksRequest);
-
-        // Display the top tracks.
-        this.displayTracks(topTracks);
+            topTracks = await client.send(tracksRequest);
+            // Display the top tracks.
+            this.displayTracks(topTracks);
+        } catch (error) {
+            this.displayError(error);
+            return;
+        }
     }
 
     displayTracks(tracks) {
@@ -56,5 +61,12 @@ export default class App {
         container.innerHTML = "";
         // Append new tracks
         container.appendChild(Tracks({ tracks }));
+    }
+
+    displayError(error) {
+        // Clear previous tracks
+        const container = document.getElementById("trackList");
+        container.innerHTML =
+            "<h1>Error fetching artist or tracks too many bad requests</h1>";
     }
 }
