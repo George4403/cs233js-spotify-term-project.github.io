@@ -1,4 +1,4 @@
-import { SpotifyAlbum } from "../../vendor/spotify/models/SpotifyAlbum.js";
+import { SpotifyAlbum } from "../vendor/spotify/models/SpotifyAlbum.js";
 
 /**
  * @file Spotify Models Test Suite
@@ -26,7 +26,7 @@ test("Test instantiating SpotifyAlbum", async () => {
         ],
     };
     let album4 = SpotifyAlbum.fromJson(payload);
-    expect(album4.getName()).toBe(album.getName); // Confirm that the object constructed from the API, is same as that constructed from everyday language.
+    expect(album4.getName()).toBe(album.getName()); // Confirm that the object constructed from the API, is same as that constructed from everyday language.
     expect(album4.getReleaseYear()).toBe(album.getReleaseYear());
     expect(album4.getReleaseMonth()).notToBe(album3.getReleaseMonth());
 
