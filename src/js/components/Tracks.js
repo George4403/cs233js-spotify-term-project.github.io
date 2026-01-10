@@ -1,4 +1,4 @@
-import { TrackListItem } from "./components/TrackListItem.js";
+import { TrackListItem } from "./TrackListItem.js";
 
 export function Tracks({ tracks }) {
     // Create a container for the track list

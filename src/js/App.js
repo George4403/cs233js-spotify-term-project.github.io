@@ -2,7 +2,7 @@ import SpotifyHttpClient from "../vendor/spotify/client/SpotifyHttpClient.js";
 import SpotifyOAuthTokenRequest from "../vendor/spotify/api/SpotifyOAuthTokenRequest.js";
 import SpotifyArtistSearchRequest from "../vendor/spotify/api/SpotifyArtistSearchRequest.js";
 import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js";
-import { Tracks } from "./Tracks.js";
+import ChartToppers from "./components/ChartToppers.js";
 
 // Spotify API Credentials
 const clientID = "4c15e19067fd4e66b8b075a6e53839ab";
@@ -23,7 +23,7 @@ export default class App {
         this.$form = document.getElementById("trackForm");
         this.$artist = document.querySelector("#artist");
         this.$track = document.querySelector("#trackList");
-        this.displayTracks = this.displayTracks.bind(this);
+        this.topTenChart = this.topTenChart.bind(this);
         this.$form.addEventListener("submit", this.artistSearch.bind(this));
     }
 
@@ -48,19 +48,19 @@ export default class App {
 
             topTracks = await client.send(tracksRequest);
             // Display the top tracks.
-            this.displayTracks(topTracks);
+            this.topTenChart(topTracks);
         } catch (error) {
             this.displayError(error);
             return;
         }
     }
 
-    displayTracks(tracks) {
+    topTenChart(tracks) {
         // Clear previous tracks
         const container = document.getElementById("trackList");
         container.innerHTML = "";
         // Append new tracks
-        container.appendChild(Tracks({ tracks }));
+        container.appendChild(ChartToppers({ tracks }));
     }
 
     displayError(error) {

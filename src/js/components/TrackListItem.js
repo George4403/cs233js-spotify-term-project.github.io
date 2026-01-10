@@ -1,6 +1,6 @@
-import AlbumCover from "./AlbumCover.js";
 import TrackTitle from "./TrackTitle.js";
-import TrackDetailsPanel from "./TrackDetailsPanel.js";
+import Album from "./Album.js";
+import TrackDetails from "./TrackDetails.js";
 
 export function TrackListItem({ track }) {
     // Create a new list item element
@@ -10,7 +10,7 @@ export function TrackListItem({ track }) {
     const imageUrl = track.getAlbum().getImageUrl(1) || null;
     // Create and append the album cover
     li.appendChild(
-        AlbumCover({
+        Album({
             url: imageUrl,
             alt: `Album cover for ${track.album.name}`,
         })
@@ -34,7 +34,7 @@ export function TrackListItem({ track }) {
 
         // TODO: Render track details panel outside of event listener
         // Create and insert the track details panel
-        const detailsPanel = TrackDetailsPanel({
+        const detailsPanel = TrackDetails({
             albumName: track.album?.name,
             trackNumber: track.getTrackNumber(),
             releaseDate: track.getAlbum().getReleaseDate(),
