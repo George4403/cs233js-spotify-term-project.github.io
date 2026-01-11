@@ -61,30 +61,27 @@ export class SpotifyAlbum {
     }
 
     normalizeReleaseDate(date) {
-        // Spotify date format
+        // Ensure we operate on a string
+        date = String(date);
+        // Handle YYYY-MM-DD or YYYY-MM (Converting to MM-DD-YYYY)
         if (date.includes("-")) {
-            return date;
-        }
-
-        // MM/DD/YYYY
-        if (date.includes("/")) {
-            const parts = date.split("/");
+            const parts = date.split("-");
+            // YYYY-MM-DD -> MM-DD-YYYY
             if (parts.length === 3) {
-                const [month, day, year] = parts;
-                return `${year}-${month.padStart(2, "0")}-${day.padStart(
-                    2,
-                    "0"
-                )}`;
+                const [year, month, day] = parts;
+                return `${month}-${day}-${year}`;
             }
-
-            // MM/YYYY
+            // YYYY-MM -> MM-YYYY
             if (parts.length === 2) {
-                const [month, year] = parts;
-                return `${year}-${month.padStart(2, "0")}`;
+                const [year, month] = parts;
+                return `${month}-${year}`;
             }
         }
-
-        // YYYY
+        // Handle MM/DD/YYYY (Standardizing separators to hyphens)
+        if (date.includes("/")) {
+            return date.replace(/\//g, "-");
+        }
+        // Fallback for YYYY only or already formatted strings
         return date;
     }
 }
