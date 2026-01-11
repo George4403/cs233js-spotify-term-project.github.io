@@ -1,6 +1,6 @@
 import TrackDetails from "./TrackDetails.js";
 
-export function Track(track) {
+export function Track({ track }) {
     const li = document.createElement("li");
     li.classList.add("track-item"); // Add a class to the list item
 
@@ -11,7 +11,7 @@ export function Track(track) {
 
     // Create a span for the track name
     const trackName = document.createElement("span");
-    trackName.textContent = track.name;
+    trackName.appendChild(document.createTextNode(track.getName()));
 
     // Append the album cover and track name to the list item
     li.appendChild(albumCover);
@@ -26,7 +26,7 @@ export function Track(track) {
 
     // Add click event listener to toggle details visibility
     li.addEventListener("click", toggleDetails);
-    li.appendChild(TrackDetails(track));
+    li.appendChild(TrackDetails({ track }));
 
     return li;
 }

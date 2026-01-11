@@ -37,7 +37,18 @@ export default class App {
         // Initialize search and artist requests with the access token
         const searchRequest = new SpotifyArtistSearchRequest(artistName);
         const tracksRequest = new SpotifyArtistRequest();
-        let topTracks = [];
+
+        // Send search request
+        const artists = await client.send(searchRequest);
+        const artist = artists[0];
+
+        tracksRequest.setArtistID(artist.getId());
+
+        const topTracks = await client.send(tracksRequest);
+
+        // Display the top tracks.
+        this.topTenChart(topTracks);
+        /*let topTracks = [];
 
         try {
             // Send search request
@@ -52,7 +63,7 @@ export default class App {
         } catch (error) {
             this.displayError(error);
             return;
-        }
+        } */
     }
 
     topTenChart(tracks) {

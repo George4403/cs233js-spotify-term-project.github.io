@@ -1,15 +1,38 @@
-export default function TrackDetails(track) {
+export default function TrackDetails({ track }) {
     // If details dont exist, render them
     const details = document.createElement("div");
-    details.className.add("track-details");
+    details.classList.add("track-details");
     // Hide details by default
     details.classList.add("hidden");
-    details.innerHTML = `
-    <p>Album: ${track.getAlbum().name}</p>
-    <p>Track Number: ${track.getTrackNumber()}</p>
-    <p>Release Date: ${track.getAlbum().getReleaseDate()}</p>
-    <p><a href="${track.getPreviewUrl()}" target="_blank">Listen on Spotify</a></p>
-    `;
+
+    const album = document.createElement("p");
+    album.appendChild(
+        document.createTextNode(`Album: ${track.getAlbum().getName()}`)
+    );
+
+    const number = document.createElement("p");
+    number.appendChild(
+        document.createTextNode(`Track Number: ${track.getTrackNumber()}`)
+    );
+
+    const date = document.createElement("p");
+    date.appendChild(
+        document.createTextNode(
+            `Release Date: ${track.getAlbum().getReleaseDate()}`
+        )
+    );
+
+    const previewUrl = track.getPreviewUrl();
+
+    if (previewUrl) {
+        const link = document.createElement("a");
+        link.href = previewUrl;
+        link.target = "_blank";
+        link.appendChild(document.createTextNode("Listen on Spotify"));
+        details.appendChild(link);
+    }
+
+    details.append(album, number, date);
 
     return details;
 }

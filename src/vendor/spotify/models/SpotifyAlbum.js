@@ -1,67 +1,90 @@
 // Model class for Spotify Album
 // Represents an album in the Spotify API
 export class SpotifyAlbum {
+    constructor(name, releaseDate) {
+        this.name = name;
+        this.releaseDate = this.normalizeReleaseDate(releaseDate);
+    }
 
+    getName() {
+        return this.name;
+    }
 
-  constructor(name, releaseDate) {
-    this.name = name;
-    this.releaseDate = releaseDate;
-  }
+    getId() {
+        return this.id;
+    }
 
-  getName() {
-    return this.name;
-  }
+    getReleaseDate() {
+        return this.releaseDate;
+    }
 
-  getId() {
-    return this.id;
-  }
+    setReleaseDate(releaseDate) {
+        this.releaseDate = releaseDate;
+    }
 
-  getReleaseDate() {
-    return this.releaseDate;
-  }
+    getTotalTracks() {
+        return this.totalTracks;
+    }
 
-  setReleaseDate(releaseDate) {
-    this.releaseDate = releaseDate;
-  }
+    setTotalTracks(totalTracks) {
+        this.totalTracks = totalTracks;
+    }
 
-  getTotalTracks() {
-    return this.totalTracks;
-  }
+    getImageUrl(size = 1) {
+        return this.imageUrl[size]?.url ?? "";
+    }
 
-  setTotalTracks(totalTracks) {
-    this.totalTracks = totalTracks;
-  }
+    setImageUrl(imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
-  getImageUrl(size = 1) {
-    return this.imageUrl[size]?.url ?? "";
-  }
+    getReleaseYear() {
+        return this.releaseDate?.split("-")[0];
+    }
 
-  setImageUrl(imageUrl) {
-    this.imageUrl = imageUrl;
-  }
+    getReleaseMonth() {
+        return this.releaseDate?.split("-")[1];
+    }
 
-  getReleaseYear() {
-    return this.releaseDate.split("-")[0];
-  }
+    getReleaseDay() {
+        return this.releaseDate?.split("-")[2];
+    }
 
-  getReleaseMonth() {
-    return this.releaseDate.split("-")[1];
-  }
+    // Static method to create a SpotifyAlbum from JSON data
+    static fromJson(json) {
+        let album = new SpotifyAlbum(json.name, json.release_date);
+        album.id = json.id;
+        album.totalTracks = json.total_tracks;
+        album.imageUrl = json.images ?? [];
 
-  getReleaseDay() {
-    return this.releaseDate.split("-")[2];
-  }
+        return album;
+    }
 
-  // Static method to create a SpotifyAlbum from JSON data
-  static fromJson(json) {
+    normalizeReleaseDate(date) {
+        // Spotify date format
+        if (date.includes("-")) {
+            return date;
+        }
 
-    let album = new SpotifyAlbum(json.name, json.release_date);
-    album.id = json.id;
-    album.totalTracks = json.total_tracks;
-    album.imageUrl = json.images ?? [];
+        // MM/DD/YYYY
+        if (date.includes("/")) {
+            const parts = date.split("/");
+            if (parts.length === 3) {
+                const [month, day, year] = parts;
+                return `${year}-${month.padStart(2, "0")}-${day.padStart(
+                    2,
+                    "0"
+                )}`;
+            }
 
-    return album;
-  }
+            // MM/YYYY
+            if (parts.length === 2) {
+                const [month, year] = parts;
+                return `${year}-${month.padStart(2, "0")}`;
+            }
+        }
 
-
+        // YYYY
+        return date;
+    }
 }

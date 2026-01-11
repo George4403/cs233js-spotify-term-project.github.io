@@ -1,5 +1,3 @@
-import { TrackListItem } from "./TrackListItem.js";
-
 export function Tracks({ tracks }) {
     // Create a container for the track list
     const ol = document.createElement("ol");
