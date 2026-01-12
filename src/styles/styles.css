@@ -136,3 +136,13 @@ body {
     border-radius: 10px;
     display: block;
 }
+
+.chart-rank {
+    position: absolute;
+    display: inline-block;
+    background-color: red;
+    padding: 8px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 2em;
+}
