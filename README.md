@@ -1,19 +1,13 @@
-<h1>Spotify Artist Top 10</h1>
-<img width="2519" height="992" alt="image" src="https://github.com/user-attachments/assets/f4d5c6df-6378-4d19-bdf8-80acd4874fa4" />
+# Spotify Artist Top 10
 
-A web application that lets users search for an artist and view their Top 10 tracks using the Spotify Web API.
+Retrieve an artist's most listened-to music on the Spotify platform.
+![Example using Spotify Artist's Top 10 app](screenshots/Spotify%20Top%2010%20Example.png)
 
-<h2>Features</h2>
+## Features
 
-Search for any artist by name
-
-Fetch and display their Top 10 songs
-
-Shows album cover, album name, release date, and a link to listen on Spotify
-
-Click on a track to reveal more details
-
-Built with Vanilla JavaScript, HTML, and Bootstrap CSS
+-   Search for an artist's Top 10 Spotify tracks by artist name.
+-   Display the track, album name, cover art and release date.
+-   Listen to tracks on the Spotify app (external link).
 
 ## Repository Structure
 
