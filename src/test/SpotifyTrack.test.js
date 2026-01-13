@@ -1,4 +1,4 @@
-import { SpotifyTrack } from "../vendor/spotify/models/SpotifyTrack";
+import { SpotifyTrack } from "spotify/models/SpotifyTrack";
 
 /**
  *  @file Spotify Models Test Suite
