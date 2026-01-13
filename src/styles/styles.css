@@ -136,3 +136,6 @@ body {
     border-radius: 10px;
     display: block;
 }
+.hidden {
+    display: none;
+}

@@ -63,7 +63,6 @@ export default class SpotifyHttpClient {
 
         // If unauthorized, attempt to get a new token and retry the request.
         if (response.status === 401) {
-            //this.#counter += 1;
             return this.send(this.#authorizationRequest).then(() =>
                 this.send(request)
             );
