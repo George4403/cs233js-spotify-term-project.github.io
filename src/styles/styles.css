@@ -137,12 +137,24 @@ body {
     cursor: pointer;
     list-style: none;
 }
+
 .track-list-item img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
     display: block;
 }
+
 .hidden {
     display: none;
+}
+
+.chart-rank {
+    position: absolute;
+    display: inline-block;
+    background-color: red;
+    padding: 8px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 2em;
 }
