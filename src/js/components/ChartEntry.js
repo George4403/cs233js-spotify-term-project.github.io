@@ -11,7 +11,9 @@ export default function ChartEntry({ track, rank }) {
 
     li.appendChild(rankElem);
 
+    // li.appendChild(Album({ track }));
     li.appendChild(Track({ track }));
+
 
     return li;
 }

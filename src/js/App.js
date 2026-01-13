@@ -4,19 +4,27 @@ import SpotifyArtistSearchRequest from "spotify/request/SpotifyArtistSearchReque
 import SpotifyArtistRequest from "spotify/request/SpotifyArtistRequest.js";
 import ChartToppers from "./components/ChartToppers.js";
 
-// Spotify API Credentials
-const clientID = "4c15e19067fd4e66b8b075a6e53839ab";
-const clientSecret = "1a0b2b1255c94798ab70d92facf6c42f";
+let client;
 
-// Initialize Spotify OAuth Token Request
-const tokenRequest = new SpotifyOAuthTokenRequest(clientID, clientSecret);
 
-const client = new SpotifyHttpClient();
+window.initializeClient = initializeClient;
+
+
+function initializeClient() {
+    // Spotify API Credentials
+    const clientID = "4c15e19067fd4e66b8b075a6e53839ab";
+    const clientSecret = "1a0b2b1255c94798ab70d92facf6c42f";
+
+
+    client = new SpotifyHttpClient(clientID, clientSecret);
+}
+
+
 
 export default class App {
     constructor() {
-        // Get access token and set it in the client
-        client.send(tokenRequest);
+
+        initializeClient();
 
         // DOM Elements
         this.$topTrack = document.getElementById("#topTrack");
