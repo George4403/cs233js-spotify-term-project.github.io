@@ -37,6 +37,7 @@
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1",
     "react": "file:./dev_modules/@ocdla/view/react",
-    "react-dom": "file:./dev_modules/@ocdla/view/react-dom"
+    "react-dom": "file:./dev_modules/@ocdla/view/react-dom",
+    "spotify": "file:./dev_modules/gp-spotify"
   }
 }

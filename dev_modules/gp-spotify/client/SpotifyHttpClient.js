@@ -1,6 +1,6 @@
 import { SpotifyArtist } from "../models/SpotifyArtist.js";
 import { SpotifyTrack } from "../models/SpotifyTrack.js";
-import SpotifyOAuthTokenRequest from "../api/SpotifyOAuthTokenRequest.js";
+import SpotifyOAuthTokenRequest from "../request/SpotifyOAuthTokenRequest.js";
 
 /**
  * Spotify HTTP Client for sending requests to Spotify API.
@@ -41,7 +41,8 @@ export default class SpotifyHttpClient {
         const req = new Request(request.url, request.init);
 
         // Add Authorization header for non-oauth-token requests
-        if (request.type !== "oauth-token") {
+        if (request.type !== "oauth-token")
+        {
             req.headers.set("Authorization", `Bearer ${this.#accessToken}`);
         }
 
@@ -52,23 +53,27 @@ export default class SpotifyHttpClient {
         const json = await response.json();
 
         // If counter exceeds 5 attempts, throw error
-        if (this.#counter >= SpotifyHttpClient.MAX_REQUESTS) {
+        if (this.#counter >= SpotifyHttpClient.MAX_REQUESTS)
+        {
             throw new Error("Max retry attempts exceeded.");
         }
 
         // Increment counter for rate limiting and authorization errors
-        if ([401, 403, 429].includes(response.status)) {
+        if ([401, 403, 429].includes(response.status))
+        {
             this.#counter += 1;
         }
 
         // If unauthorized, attempt to get a new token and retry the request.
-        if (response.status === 401) {
+        if (response.status === 401)
+        {
             return this.send(this.#authorizationRequest).then(() =>
                 this.send(request)
             );
         }
 
-        if (request.type === "oauth-token") {
+        if (request.type === "oauth-token")
+        {
             this.#accessToken = json.access_token;
             // Save the access token for future requests.
             // It could be automaticallly attached to future requests here if desired.
@@ -77,7 +82,8 @@ export default class SpotifyHttpClient {
         }
 
         // Check for HTTP errors
-        if (!response.ok) {
+        if (!response.ok)
+        {
             const text = await response.text();
             throw new Error(
                 `HTTP error! status: ${response.status} -- ${text}`
@@ -91,14 +97,16 @@ export default class SpotifyHttpClient {
     // Map JSON response to appropriate models
     mapResponse(json, type) {
         // Search artists
-        if (type === "artist-search") {
+        if (type === "artist-search")
+        {
             return json.artists.items.map(
                 (artistJson) => new SpotifyArtist(artistJson)
             );
         }
 
         // Get artist's top tracks
-        if (type === "artist-top-tracks") {
+        if (type === "artist-top-tracks")
+        {
             return json.tracks.map((trackJson) => new SpotifyTrack(trackJson));
         }
         // Default: return raw JSON

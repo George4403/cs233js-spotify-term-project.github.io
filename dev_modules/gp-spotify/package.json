@@ -1,0 +1,12 @@
+{
+    "name": "gp-spotify",
+    "version": "0.1.0",
+    "description": "Spotify integration for GP.",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "George Perry",
+    "license": "ISC",
+    "type": "module"
+}

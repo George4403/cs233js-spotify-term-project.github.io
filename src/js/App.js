@@ -1,7 +1,7 @@
-import SpotifyHttpClient from "../vendor/spotify/client/SpotifyHttpClient.js";
-import SpotifyOAuthTokenRequest from "../vendor/spotify/api/SpotifyOAuthTokenRequest.js";
-import SpotifyArtistSearchRequest from "../vendor/spotify/api/SpotifyArtistSearchRequest.js";
-import SpotifyArtistRequest from "../vendor/spotify/api/SpotifyArtistRequest.js";
+import SpotifyHttpClient from "spotify/client/SpotifyHttpClient.js";
+import SpotifyOAuthTokenRequest from "spotify/request/SpotifyOAuthTokenRequest.js";
+import SpotifyArtistSearchRequest from "spotify/request/SpotifyArtistSearchRequest.js";
+import SpotifyArtistRequest from "spotify/request/SpotifyArtistRequest.js";
 import ChartToppers from "./components/ChartToppers.js";
 
 // Spotify API Credentials
