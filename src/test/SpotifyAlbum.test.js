@@ -1,4 +1,4 @@
-import { SpotifyAlbum } from "../vendor/spotify/models/SpotifyAlbum.js";
+import { SpotifyAlbum } from "spotify/models/SpotifyAlbum.js";
 
 /**
  * @file Spotify Models Test Suite

@@ -1,4 +1,4 @@
-import { SpotifyArtist } from "../vendor/spotify/models/SpotifyArtist";
+import { SpotifyArtist } from "spotify/models/SpotifyArtist";
 
 /**
  *  @file Spotify Models Test Suite
