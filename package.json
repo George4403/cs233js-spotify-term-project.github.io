@@ -8,6 +8,7 @@
     "webpack": "webpack",
     "build": "webpack --config webpack.config.js",
     "watch": "webpack serve --env foo=bar --open",
+    "start-server": "nodemon src/server.js",
     "test": "jest",
     "babel:test": "BABEL_SHOW_CONFIG_FOR=./src/js/SpotifyApp.js npx babel --config-file ./babel.config.json src/js/SpotifyApp.js --out-file SpotifyApp-transpiled.scratch.js"
   },
@@ -36,6 +37,10 @@
     "bootstrap": "^5.2.1",
     "bootstrap-less": "^3.3.8",
     "less": "^4.1.1",
+    "cookie-parser": "^1.4.7",
+    "cookie-session": "^2.1.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
     "react": "file:./dev_modules/@ocdla/view/react",
     "react-dom": "file:./dev_modules/@ocdla/view/react-dom",
     "spotify": "file:./dev_modules/gp-spotify"
