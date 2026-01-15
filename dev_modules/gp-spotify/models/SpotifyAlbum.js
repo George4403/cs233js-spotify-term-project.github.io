@@ -3,7 +3,7 @@
 export class SpotifyAlbum {
     constructor(name, releaseDate) {
         this.name = name;
-        this.releaseDate = this.normalizeReleaseDate(releaseDate);
+        this.setReleaseDate(releaseDate);
     }
 
     getName() {
@@ -19,7 +19,7 @@ export class SpotifyAlbum {
     }
 
     setReleaseDate(releaseDate) {
-        this.releaseDate = releaseDate;
+        this.releaseDate = this.normalizeReleaseDate(releaseDate);
     }
 
     getTotalTracks() {
@@ -39,15 +39,24 @@ export class SpotifyAlbum {
     }
 
     getReleaseYear() {
-        return this.releaseDate?.split("-")[0];
+        const parts = this.releaseDate.split("-");
+        // If the release date only contains the year, return it. Otherwise, return the last part (year) of the date.
+        return parts[parts.length - 1];
     }
 
     getReleaseMonth() {
-        return this.releaseDate?.split("-")[1];
+        const parts = this.releaseDate.split("-");
+        // If the release date only contains the year, return undefined. Otherwise, return the first part (month) of the date.
+        return parts.length === 1 ? undefined : parts[0];
     }
 
     getReleaseDay() {
-        return this.releaseDate?.split("-")[2];
+        const parts = this.releaseDate.split("-");
+        // If the release date only contains the year or year-month, return undefined. Otherwise, return the second part (day) of the date.
+        if (parts.length === 3) {
+            return parts[1];
+        }
+        return undefined;
     }
 
     // Static method to create a SpotifyAlbum from JSON data
@@ -61,27 +70,24 @@ export class SpotifyAlbum {
     }
 
     normalizeReleaseDate(date) {
-        // Ensure we operate on a string
-        date = String(date);
-        // Handle YYYY-MM-DD or YYYY-MM (Converting to MM-DD-YYYY)
-        if (date.includes("-")) {
-            const parts = date.split("-");
-            // YYYY-MM-DD -> MM-DD-YYYY
-            if (parts.length === 3) {
-                const [year, month, day] = parts;
-                return `${month}-${day}-${year}`;
-            }
-            // YYYY-MM -> MM-YYYY
-            if (parts.length === 2) {
-                const [year, month] = parts;
-                return `${month}-${year}`;
-            }
+        if (!date) return "";
+
+        // Standardize all slashes to hyphens immediately
+        let normalized = String(date).replaceAll("/", "-");
+
+        // Handle Spotify ISO format: YYYY-MM-DD -> MM-DD-YYYY
+        if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+            const [y, m, d] = normalized.split("-");
+            return `${m}-${d}-${y}`;
         }
-        // Handle MM/DD/YYYY (Standardizing separators to hyphens)
-        if (date.includes("/")) {
-            return date.replace(/\//g, "-");
+
+        // Handle Spotify ISO format: YYYY-MM -> MM-YYYY
+        if (/^\d{4}-\d{2}$/.test(normalized)) {
+            const [y, m] = normalized.split("-");
+            return `${m}-${y}`;
         }
-        // Fallback for YYYY only or already formatted strings
-        return date;
+
+        // If it's already MM-DD-YYYY, MM-YYYY, or YYYY, just return it
+        return normalized;
     }
 }
