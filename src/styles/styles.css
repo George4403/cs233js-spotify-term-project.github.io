@@ -158,3 +158,18 @@ body {
     color: #fff;
     font-size: 2em;
 }
+
+.previous-search {
+    padding: 10px;
+    border: 1px solid #393636;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    text-align: center;
+    font-size: large;
+    transition: background-color 0.3s, transform 0.3s;
+}
+.previous-search:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.05);
+}

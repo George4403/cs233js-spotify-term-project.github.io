@@ -1,41 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spotify Artist's Top 10 Chart - Spotify API</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Spotify Artist's Top 10 Chart - Spotify API</title>
+    </head>
+    <body>
+        <div id="app-container">
+            <div class="app">
+                <div class="track-form">
+                    <form id="trackForm">
+                        <div class="flex-parent">
+                            <label for="artist">Artist</label>
+                            <input
+                                class="form-control"
+                                type="input"
+                                id="artist"
+                                name="artist"
+                                placeholder="Search for an Artist"
+                                value=""
+                                required
+                            />
+                            <button type="submit" class="btn btn-success">
+                                Get top tracks
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-dark"
+                                id="previousSearches"
+                            >
+                                Previous Searches
+                            </button>
+                            <button
+                                type="button"
+                                class="btn btn-danger"
+                                id="clearSearches"
+                            >
+                                Clear previous searches
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-  <div id="app-container">
+                <div id="app"></div>
 
-    <div class="app">
-
-      <div class="track-form">
-        <form id="trackForm">
-
-          <div class="flex-parent">
-            <label for="artist">Artist</label>
-            <input class="form-control" type="input" id="artist" name="artist" placeholder="Search for an Artist" value="" required />
-            <button type="submit" class="btn btn-success">
-              Get top tracks
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <div id="app"></div>
-
-      <div id="trackList"></div>
-
-      <div id="currentTrack"></div>
-
-
-    </div>
-  </div>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css" />
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
+                <div id="trackList"></div>
+                <div id="searchHistory"></div>
+                <div id="currentTrack"></div>
+            </div>
+        </div>
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>
