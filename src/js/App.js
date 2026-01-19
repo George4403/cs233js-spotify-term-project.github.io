@@ -3,6 +3,7 @@ import SpotifyOAuthTokenRequest from "spotify/request/SpotifyOAuthTokenRequest.j
 import SpotifyArtistSearchRequest from "spotify/request/SpotifyArtistSearchRequest.js";
 import SpotifyArtistRequest from "spotify/request/SpotifyArtistRequest.js";
 import ChartToppers from "./components/ChartToppers.js";
+import Form from "./components/Form.js";
 import { getPreviousSearchNameFromUrl } from "./utils/url.js";
 import { saveSearch, getPreviousSearches } from "./utils/storage.js";
 
@@ -10,9 +11,8 @@ let client;
 // Get the previous search term from the URL
 const searchTerm = getPreviousSearchNameFromUrl(window.location.href);
 // If there is a previous search term, save it to localStorage
-if (searchTerm) {
-    saveSearch(searchTerm);
-}
+//http://localhost:8080/?artist/green%20day
+
 // Initialize the Spotify client
 window.initializeClient = initializeClient;
 // Function to initialize the Spotify client
@@ -29,36 +29,43 @@ export default class App {
         initializeClient();
 
         // DOM Elements
-        this.$topTrack = document.getElementById("#topTrack");
+        this.$topTrack = document.getElementById("topTrack");
         this.$form = document.getElementById("trackForm");
+        // Create and append the form component
+        const form = Form({
+            onSubmit: this.handleSubmit.bind(this),
+            onShowHistory: this.showPreviousSearches.bind(this),
+            onClearHistory: this.clearSearches.bind(this),
+        });
+        // Append the form component to the app container
+        document.getElementById("app").appendChild(form);
         this.$artist = document.querySelector("#artist");
         this.$track = document.querySelector("#trackList");
         this.$previousSearches = document.getElementById("previousSearches");
         this.$clearSearches = document.getElementById("clearSearches");
         this.topTenChart = this.topTenChart.bind(this);
-        this.$form.addEventListener("submit", this.artistSearch.bind(this));
-        this.$previousSearches.addEventListener(
-            "click",
-            this.showPreviousSearches.bind(this)
-        );
-        this.$clearSearches.addEventListener(
-            "click",
-            this.clearSearches.bind(this)
-        );
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        // extract artist name from form
+        let form = event.currentTarget;
+        let data = new FormData(form);
+        const artistName = data.get("artist");
+        // search for the artist
+        this.artistSearch(artistName);
     }
 
     // Search for artist and get top tracks
-    async artistSearch(event) {
-        // Hide the search history and show the track list
-        document.getElementById("searchHistory").classList.add("hidden");
-        this.$track.classList.remove("hidden");
-        this.$track.innerHTML = "";
-        // Prevent the default form submission behavior
-        event.preventDefault();
-
-        // Get user input.
-        const artistName = this.$artist.value;
-
+    async artistSearch(artistName) {
+        // Check if artistName is valid
+        if (
+            artistName === undefined ||
+            artistName === null ||
+            artistName.trim() === ""
+        ) {
+            return;
+        }
         // Save the search to localStorage
         saveSearch(artistName);
 
@@ -114,28 +121,27 @@ export default class App {
         const previousSearches = getPreviousSearches();
         // Hide the track list and show the search history
         const trackList = document.getElementById("trackList");
-        const historyContainer = document.getElementById("searchHistory");
 
         trackList.innerHTML = "";
         trackList.classList.add("hidden");
         // Show the search history
-        historyContainer.innerHTML = "";
-        historyContainer.classList.remove("hidden");
+        trackList.innerHTML = "";
+        trackList.classList.remove("hidden");
         // Display each previous search
         previousSearches.forEach((search) => {
             const div = document.createElement("div");
             div.textContent = search;
             div.classList.add("previous-search");
             // Add a click event listener to each previous search
-            div.addEventListener("click", () => {
-                historyContainer.classList.add("hidden");
-                trackList.classList.remove("hidden");
+            const searchPrevious = (event) => {
+                const searchTerm = event.currentTarget.textContent;
                 // Set the artist input value to the previous search
-                this.$artist.value = search;
-                this.artistSearch(new Event("submit"));
-            });
+                this.artistSearch(searchTerm);
+            };
 
-            historyContainer.appendChild(div);
+            div.addEventListener("click", searchPrevious);
+
+            trackList.appendChild(div);
         });
         console.log(previousSearches);
     }

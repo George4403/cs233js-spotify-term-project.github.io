@@ -8,9 +8,6 @@ let root = createRoot(document.getElementById("app"));
 
 // Initialize the app when the window loads.
 window.onload = () => {
-    new App();
+    let app = new App();
+    app.artistSearch();
 };
-
-
-
-

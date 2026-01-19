@@ -1,4 +1,5 @@
 // Utility functions for managing previous searches in localStorage
+// Provides functions to get, save, and clear previous searches
 const STORAGE_KEY = "previousSearches";
 // Retrieves the list of previous searches from localStorage
 export function getPreviousSearches() {
