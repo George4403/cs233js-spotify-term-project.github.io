@@ -1,3 +1,4 @@
+import { getPreviousSearchNameFromUrl } from "./url";
 // Utility functions for managing previous searches in localStorage
 // Provides functions to get, save, and clear previous searches
 const STORAGE_KEY = "previousSearches";
@@ -17,10 +18,12 @@ export function saveSearch(search) {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(searches));
     }
 }
-// Saves a new search to the list of previous searches in localStorage
+// Saves a new search to the list of previous searches via URL parameters
 export function savePreviousSearch(search) {
-    const searches = getPreviousSearches();
+    // Get the previous searches from the URL
+    const searches = getPreviousSearchNameFromUrl(window.location.href);
     searches.push(search);
+    // Update the URL with the new search
     localStorage.setItem(STORAGE_KEY, JSON.stringify(searches));
 }
 

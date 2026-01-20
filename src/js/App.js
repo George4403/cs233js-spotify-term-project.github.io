@@ -9,8 +9,6 @@ import { saveSearch, getPreviousSearches } from "./utils/storage.js";
 
 let client;
 // Get the previous search term from the URL
-const searchTerm = getPreviousSearchNameFromUrl(window.location.href);
-// If there is a previous search term, save it to localStorage
 //http://localhost:8080/?artist/green%20day
 
 // Initialize the Spotify client
@@ -37,7 +35,6 @@ export default class App {
             onShowHistory: this.showPreviousSearches.bind(this),
             onClearHistory: this.clearSearches.bind(this),
         });
-        // Append the form component to the app container
         document.getElementById("app").appendChild(form);
         this.$artist = document.querySelector("#artist");
         this.$track = document.querySelector("#trackList");
@@ -51,7 +48,18 @@ export default class App {
         // extract artist name from form
         let form = event.currentTarget;
         let data = new FormData(form);
-        const artistName = data.get("artist");
+        const artistName = data.get("artist")?.trim();
+
+        if (!artistName || artistName === "") return;
+
+        // Build the URL with the search parameter
+        const url = new URL(window.location.href);
+        // Check if the search parameter already exists in the URL
+        if (!url.searchParams.getAll("search").includes(artistName)) {
+            url.searchParams.append("search", artistName);
+            // Update the URL without reloading the page
+            window.history.pushState({}, "", url);
+        }
         // search for the artist
         this.artistSearch(artistName);
     }
@@ -117,8 +125,8 @@ export default class App {
     }
 
     showPreviousSearches() {
-        // Retrieve previous searches from localStorage
-        const previousSearches = getPreviousSearches();
+        // Retrieve previous searches from localStorage via URL parameters
+        const searches = getPreviousSearchNameFromUrl(window.location.href);
         // Hide the track list and show the search history
         const trackList = document.getElementById("trackList");
 
@@ -128,27 +136,25 @@ export default class App {
         trackList.innerHTML = "";
         trackList.classList.remove("hidden");
         // Display each previous search
-        previousSearches.forEach((search) => {
+        searches.forEach((search) => {
             const div = document.createElement("div");
             div.textContent = search;
             div.classList.add("previous-search");
             // Add a click event listener to each previous search
-            const searchPrevious = (event) => {
-                const searchTerm = event.currentTarget.textContent;
-                // Set the artist input value to the previous search
-                this.artistSearch(searchTerm);
-            };
-
-            div.addEventListener("click", searchPrevious);
+            div.addEventListener("click", () => {
+                this.artistSearch(search);
+            });
 
             trackList.appendChild(div);
         });
-        console.log(previousSearches);
+        console.log(searches);
     }
 
     clearSearches() {
-        // Clear previous searches from localStorage
-        localStorage.removeItem("previousSearches");
+        // Clear previous searches from URL parameters
+        const url = new URL(window.location.href);
+        url.searchParams.delete("search");
+        window.history.pushState({}, "", url);
         const container = document.getElementById("trackList");
         container.innerHTML = "";
     }
