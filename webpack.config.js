@@ -36,6 +36,28 @@ module.exports = (env) => {
         devServer: {
             static: "./dist",
             historyApiFallback: true,
+
+            // Example with specific rewrites
+            // historyApiFallback: {
+            // rewrites: [
+            //     { from: /^\/user\/.*/, to: '/user.html'
+            //         },
+            //     { from: /^\/other-app\/.*/, to: '/other-app.html' },
+            // ],
+            // },
+            // proxy: {
+            //     '/api': {
+            //         target: 'http://localhost:3000', // The backend server address
+            //         secure: false, // Set to true if the backend uses HTTPS
+            //         changeOrigin: true, // Changes the origin of the host header to the target URL
+            //     },
+            //     '/admin': {
+            //         target: 'http://localhost:4000', // A different backend for admin
+            //         secure: false,
+            //         changeOrigin: true,
+            //     }
+            // }
+
         },
         devtool: "source-map",
         module: {
