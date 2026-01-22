@@ -31,9 +31,9 @@ export default class App {
         */
     }
 
-    render(component) {
+    render(component, previousState = {}) {
         const appContainer = document.getElementById("app");
         appContainer.innerHTML = "";
-        appContainer.appendChild(component);
+        appContainer.appendChild(component({}));
     }
 }

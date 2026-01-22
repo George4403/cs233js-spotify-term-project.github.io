@@ -1,11 +1,13 @@
+import { getPreviousSearches } from "../utils/storage.js";
+
+
+
 export default function History({ searchHistory }) {
     // Display search history
     // Retrieve previous searches from localStorage via URL parameters
     // Retrieve search history from localStorage
-    searchHistory =
-        searchHistory ||
-        JSON.parse(localStorage.getItem("searchHistory")) ||
-        [];
+    searchHistory = getPreviousSearches();
+
     //const searches = getPreviousSearchNameFromUrl(window.location.href);
     // Hide the track list and show the search history
     const historyContainer = document.createElement("div");
