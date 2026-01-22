@@ -96,6 +96,16 @@ export default class SpotifyHttpClient {
 
     // Map JSON response to appropriate models
     mapResponse(json, type) {
+
+
+        /*'
+
+        What kind of request did we have?
+        Based on the request type, which response class should we import?
+        // Learn how to use dynamic imports
+        // For example, import("path to response class")
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
+        */
         // Search artists
         if (type === "artist-search")
         {
