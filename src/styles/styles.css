@@ -16,6 +16,7 @@ body {
     padding: 15px;
     border-radius: 20px;
     margin-bottom: 3em;
+    text-align: center;
 }
 
 .track-form label {
@@ -159,7 +160,7 @@ body {
     font-size: 2em;
 }
 
-.previous-search {
+.historyEntry {
     padding: 10px;
     border: 1px solid #393636;
     border-radius: 20px;
@@ -167,9 +168,57 @@ body {
     cursor: pointer;
     text-align: center;
     font-size: large;
-    transition: background-color 0.3s, transform 0.3s;
+    transition:
+        background-color 0.3s,
+        transform 0.3s;
 }
-.previous-search:hover {
+.historyEntry:hover {
     background-color: #f0f0f0;
     transform: scale(1.05);
+}
+
+#artist {
+    padding: 10px;
+    border: 1px solid #393636;
+    border-radius: 5px;
+}
+
+#searchButton {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 1px solid #393636;
+    border-radius: 5px;
+    background-color: #1db954;
+    color: white;
+    cursor: pointer;
+}
+
+#searchHistoryButton {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 1px solid #393636;
+    border-radius: 5px;
+    background-color: #1db954;
+    color: white;
+    cursor: pointer;
+}
+
+#backButton {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 1px solid #393636;
+    border-radius: 5px;
+    background-color: #1db954;
+    color: white;
+    cursor: pointer;
+}
+
+#clearSearches {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: 1px solid #393636;
+    border-radius: 5px;
+    background-color: #ff4d4d;
+    color: white;
+    cursor: pointer;
 }

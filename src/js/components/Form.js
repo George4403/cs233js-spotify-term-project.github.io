@@ -1,9 +1,4 @@
-export default function Form({
-    onSubmit,
-    onShowHistory,
-    onClearHistory,
-    artistName,
-}) {
+export default function Form({ onSubmit, onShowHistory, artistName }) {
     // Create a form element
     const form = document.createElement("form");
     form.id = "track-form";
@@ -17,28 +12,22 @@ export default function Form({
     // Create a submit button
     const submit = document.createElement("button");
     submit.type = "submit";
+    submit.id = "searchButton";
     submit.textContent = "Search";
     // Create a search history button
     const searchHistoryButton = document.createElement("button");
     searchHistoryButton.type = "button";
     searchHistoryButton.id = "searchHistoryButton";
     searchHistoryButton.textContent = "Search History";
-    // Create a clear search history button
-    const clearSearchesButton = document.createElement("button");
-    clearSearchesButton.type = "button";
-    clearSearchesButton.id = "clearSearches";
-    clearSearchesButton.textContent = "Clear Search History";
     // Append the input, submit button, search history button, and clear search history button to the form
     form.appendChild(input);
     form.appendChild(submit);
     form.appendChild(searchHistoryButton);
-    form.appendChild(clearSearchesButton);
     // Add event listeners
     form.addEventListener("submit", onSubmit);
     searchHistoryButton.addEventListener("click", () => {
         window.location.href = "/history";
     });
-    //clearSearchesButton.addEventListener("click", onClearHistory);
 
     return form;
 }

@@ -1,29 +1,27 @@
-import ResponseBase from './ResponseBase.js';
+import ResponseBase from "./ResponseBase.js";
 import { SpotifyArtist } from "../models/SpotifyArtist.js";
 
-
-
 export default class SpotifySearchResponse extends ResponseBase {
-
     #tracks;
-
     #artists;
-
     #albums;
-
+    #playlists;
     #shows;
+    #episodes;
+    #audiobooks;
 
     /// etc....
 
     constructor(json) {
         super(json);
 
-        let tmp = JSON.parse(json);
-
-        this.#tracks = tmp.tracks;
-        this.#artists = SpotifyArtist.fromJson(json);
-        this.#albums = tmp.albums;
-        this.#shows = tmp.shows;
+        this.#tracks = json.tracks?.items ?? [];
+        this.#artists = json.artists?.items ?? [];
+        this.#albums = json.albums?.items ?? [];
+        this.#playlists = json.playlists?.items ?? [];
+        this.#shows = json.shows?.items ?? [];
+        this.#episodes = json.episodes?.items ?? [];
+        this.#audiobooks = json.audiobooks?.items ?? [];
         /// etc....
     }
 
@@ -43,5 +41,15 @@ export default class SpotifySearchResponse extends ResponseBase {
         return this.#shows;
     }
 
+    get playlists() {
+        return this.#playlists;
+    }
 
+    get episodes() {
+        return this.#episodes;
+    }
+
+    get audiobooks() {
+        return this.#audiobooks;
+    }
 }

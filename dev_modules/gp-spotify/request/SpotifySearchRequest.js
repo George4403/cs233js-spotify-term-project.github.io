@@ -1,5 +1,6 @@
 // Class to handle Spotify Artist Search Request
-export default class SpotifyArtistSearchRequest {
+export default class SpotifySearchRequest {
+    responseType = "SpotifySearchResponse";
     // Base URL for Spotify Search API
     #baseURL = "https://api.spotify.com/v1/search";
     // Private fields
