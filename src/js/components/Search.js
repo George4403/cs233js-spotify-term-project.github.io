@@ -5,7 +5,7 @@ import { getPreviousSearchNameFromUrl } from "../utils/url.js";
 import { saveSearch } from "../utils/storage.js";
 import ChartToppers from "./ChartToppers";
 import Form from "./Form";
-import { setState, getState } from "../utils/react.js";
+import { setState, getState, useEffect } from "../utils/react.js";
 import { SpotifyArtist } from "spotify/models/SpotifyArtist.js";
 
 let client;
@@ -24,10 +24,8 @@ function initializeClient() {
 
 let processedUrlArtist = null;
 
-export default function Search({ artistName }) {
-    let tracks = getState("tracks");
-
-    // Check if there's an artist parameter in the URL on first render
+function extractArtistFromUrl() {
+    /*
     const urlParams = new URLSearchParams(window.location.search);
     const artistFromUrl = urlParams.get("artist");
 
@@ -38,6 +36,25 @@ export default function Search({ artistName }) {
         window.history.replaceState({}, "", "/");
         setState("artistName", artistFromUrl);
         performSearch(artistFromUrl);
+    } */
+    const pathname = new URL(window.location.href).pathname;
+    const artistFromUrl = decodeURIComponent(
+        pathname.split("/artist/")[1] || "",
+    ).trim();
+    return artistFromUrl;
+}
+
+export default function Search({ artistName }) {
+    let tracks = getState("tracks");
+
+    // Try to extract artist name from URL
+    artistName = extractArtistFromUrl();
+
+    if (artistName) {
+        setState("artistName", artistName);
+        useEffect(() => {
+            performSearch(artistName);
+        }, [artistName]);
     }
 
     async function performSearch(artistName) {

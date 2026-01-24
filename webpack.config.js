@@ -31,6 +31,7 @@ module.exports = (env) => {
             filename: "[name].bundle.js",
             assetModuleFilename: "images/[name][ext]",
             clean: true,
+            publicPath: "/",
         },
         target: "web",
         devServer: {
@@ -57,7 +58,6 @@ module.exports = (env) => {
             //         changeOrigin: true,
             //     }
             // }
-
         },
         devtool: "source-map",
         module: {

@@ -35,15 +35,12 @@ export default function History({ searchHistory }) {
     }
 
     // Populate the history container with search entries
-    searchHistory.forEach((search) => {
-        const historyEntry = document.createElement("div");
+    searchHistory.forEach((artistName) => {
+        const historyEntry = document.createElement("a");
         historyEntry.className = "historyEntry";
-        historyEntry.textContent = search;
+        historyEntry.textContent = artistName;
         historyContainer.appendChild(historyEntry);
-        historyEntry.addEventListener("click", () => {
-            // Navigate back to the main search page with the selected artist name
-            window.location.href = `/?artist=${encodeURIComponent(search)}`;
-        });
+        historyEntry.href = `/artist/${encodeURIComponent(artistName)}`;
     });
 
     return historyContainer;
