@@ -36,18 +36,20 @@ test("Test instantiating SpotifyAlbum", async () => {
     };
     let album4 = SpotifyAlbum.fromJson(payload);
     expect(album4.getName()).toBe(album.getName()); // Confirm that the object constructed from the API, is same as that constructed from everyday language.
-    expect(album4.getReleaseYear()).toBe(album.getReleaseYear());
+    expect(album4.getReleaseDate()).toBe(album.getReleaseDate());
     expect(album4.getReleaseMonth()).not.toBe(album3.getReleaseMonth());
 
     album.setTotalTracks(13);
-    album.setImageUrl("https://cdn.album-covers.com/abcd1234");
+    album.setImageUrl(payload.images);
 
     // Test that album is a type of SpotifyAlbum
     expect(album instanceof SpotifyAlbum).toBe(true);
     expect(album.getName()).toBe("Conspiracy Of One");
-    expect(album.getReleaseDate()).toBe("11/14/2000");
+    expect(album.getReleaseDate()).toBe("11-14-2000");
     expect(album.getTotalTracks()).toBe(13);
-    expect(album.getImageUrl()).toBe("https://cdn.album-covers.com/abcd1234");
+    expect(album.getImageUrl()).toBe(
+        "https://cdn.album-covers.com/abcd1234_300"
+    );
 
     // Ensure that the object does *not have an id.
     expect(album.getId()).toBeUndefined();
@@ -57,11 +59,11 @@ test("Test instantiating SpotifyAlbum", async () => {
     let ry = album.getReleaseYear();
 
     // We only know the year; i.e., like a normal person.
-    let rm2 = album3.getReleaseMonth();
+    let rm2 = album2.getReleaseMonth();
     expect(rm2).toBe("11");
-    let rd2 = album3.getReleaseDay();
+    let rd2 = album2.getReleaseDay();
     expect(rd2).toBeUndefined();
-    let ry2 = album3.getReleaseYear();
+    let ry2 = album2.getReleaseYear();
     expect(ry2).toBe("2000");
 
     // Example of an assertion that passes.

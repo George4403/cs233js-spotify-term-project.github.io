@@ -24,7 +24,7 @@ export default class SpotifyHttpClient {
     constructor(clientId, clientSecret) {
         this.#authorizationRequest = new SpotifyOAuthTokenRequest(
             clientId,
-            clientSecret
+            clientSecret,
         );
     }
 
@@ -41,8 +41,7 @@ export default class SpotifyHttpClient {
         const req = new Request(request.url, request.init);
 
         // Add Authorization header for non-oauth-token requests
-        if (request.type !== "oauth-token")
-        {
+        if (request.type !== "oauth-token") {
             req.headers.set("Authorization", `Bearer ${this.#accessToken}`);
         }
 
@@ -53,27 +52,23 @@ export default class SpotifyHttpClient {
         const json = await response.json();
 
         // If counter exceeds 5 attempts, throw error
-        if (this.#counter >= SpotifyHttpClient.MAX_REQUESTS)
-        {
+        if (this.#counter >= SpotifyHttpClient.MAX_REQUESTS) {
             throw new Error("Max retry attempts exceeded.");
         }
 
         // Increment counter for rate limiting and authorization errors
-        if ([401, 403, 429].includes(response.status))
-        {
+        if ([401, 403, 429].includes(response.status)) {
             this.#counter += 1;
         }
 
         // If unauthorized, attempt to get a new token and retry the request.
-        if (response.status === 401)
-        {
+        if (response.status === 401) {
             return this.send(this.#authorizationRequest).then(() =>
-                this.send(request)
+                this.send(request),
             );
         }
 
-        if (request.type === "oauth-token")
-        {
+        if (request.type === "oauth-token") {
             this.#accessToken = json.access_token;
             // Save the access token for future requests.
             // It could be automaticallly attached to future requests here if desired.
@@ -82,34 +77,38 @@ export default class SpotifyHttpClient {
         }
 
         // Check for HTTP errors
-        if (!response.ok)
-        {
+        if (!response.ok) {
             const text = await response.text();
             throw new Error(
-                `HTTP error! status: ${response.status} -- ${text}`
+                `HTTP error! status: ${response.status} -- ${text}`,
             );
         }
 
         // Map and return the response
-        return this.mapResponse(json, request.type);
+        return this.mapResponse(json, request);
     }
 
     // Map JSON response to appropriate models
-    mapResponse(json, type) {
-        // Search artists
-        if (type === "artist-search")
-        {
-            return json.artists.items.map(
-                (artistJson) => new SpotifyArtist(artistJson)
-            );
-        }
+    async mapResponse(json, request) {
+        /*'
 
-        // Get artist's top tracks
-        if (type === "artist-top-tracks")
-        {
-            return json.tracks.map((trackJson) => new SpotifyTrack(trackJson));
+        What kind of request did we have?
+        Based on the request type, which response class should we import?
+        // Learn how to use dynamic imports
+        // For example, import("path to response class")
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import
+        */
+        // Get the response type from the request
+        const responseTypes = request.responseType;
+        // If no response type is defined, return raw JSON
+        if (!responseTypes) {
+            return json;
         }
-        // Default: return raw JSON
-        return json;
+        // Dynamically import the appropriate response class
+        const responseModule = await import(`../response/${responseTypes}.js`);
+        // Get the response class from the module
+        const ResponseClass = responseModule.default;
+        // return new instance of the response class
+        return new ResponseClass(json);
     }
 }

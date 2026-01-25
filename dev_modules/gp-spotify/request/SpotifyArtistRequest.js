@@ -1,5 +1,6 @@
 // Class to handle Spotify Artist Top Tracks Request
 export default class SpotifyArtistRequest {
+    responseType = "SpotifyArtistResponse";
     // Base URL for Spotify Artist API
     static baseURL = "https://api.spotify.com/v1/artists";
     // Private fields

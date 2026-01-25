@@ -1,6 +1,8 @@
 import ChartEntry from "./ChartEntry";
 
 export default function ChartToppers({ tracks }) {
+
+    tracks = tracks || [];
     // create a container for the track list
     const ol = document.createElement("ol");
     ol.classList.add("grid-container");
